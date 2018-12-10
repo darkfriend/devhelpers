@@ -1,0 +1,21 @@
+{
+    "name": "darkfriend/devhelpers",
+    "type": "library",
+    "description": "Classes helpers for develops",
+    "keywords": ["dev","helpers","darkfriend","debug"],
+    "homepage": "https://github.com/darkfriend/devhelpers",
+    "authors": [
+        {
+            "name": "darkfriend",
+            "email": "hi@darkfriend.ru"
+        }
+    ],
+    "require": {
+        "php":">=7.0"
+    },
+    "autoload":{
+        "classmap":[
+            "./DebugHelper.php"
+        ]
+    }
+}
