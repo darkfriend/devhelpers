@@ -56,7 +56,7 @@ class StringHelper
 	 * @param string $chars
 	 * @return string
 	 */
-	public static function GenerateString($length = 8, $chars = '0123456789ABDEFGHKNQRSTYZ'){
+	public static function generateString($length = 8, $chars = '0123456789ABDEFGHKNQRSTYZ'){
 		$numChars = strlen($chars);
 		$string = '';
 		for ($i = 0; $i < $length; $i++) {
@@ -71,11 +71,11 @@ class StringHelper
 	 * Например: 5 товаров, 1 товар, 3 товара
 	 *
 	 * @param int $value число
-	 * @param array $status массив возможных окончаний
+	 * @param array $words массив возможных окончаний
 	 * @return string
 	 */
-	public static function GetDeclension($value = 1, $status = array('','а','ов')){
+	public static function getDeclension($value = 1, $words = array('','а','ов')){
 		$array = array(2,0,1,1,1,2);
-		return $status[($value%100>4 && $value%100<20)? 2 : $array[($value%10<5)?$value%10:5]];
+		return $words[($value%100>4 && $value%100<20)? 2 : $array[($value%10<5)?$value%10:5]];
 	}
 }
