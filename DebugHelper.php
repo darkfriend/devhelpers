@@ -1,7 +1,7 @@
 <?php
 /**
  * @author darkfriend <hi@darkfriend.ru>
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 namespace darkfriend\devhelpers;
@@ -29,7 +29,7 @@ class DebugHelper
 		?>
 		<div style='font-size:9pt; color:#000; background:#fff; border:1px dashed #000;'>
 			<div style='padding:3px 5px; background:#99CCFF; font-weight:bold;'>File: <?=$bt["file"]?> [<?=$bt["line"]?>]</div>
-			<pre style='padding:10px;'><?php print_r($o)?></pre>
+			<pre style='padding:10px;'><?php echo htmlentities(print_r($o,true))?></pre>
 		</div>
 		<?php
 		if($die) die();
