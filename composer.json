@@ -1,8 +1,8 @@
 {
     "name": "darkfriend/devhelpers",
     "type": "library",
-    "description": "Classes helpers for develops",
-    "keywords": ["dev","helpers","darkfriend","debug"],
+    "description": "Classes helpers for developers",
+    "keywords": ["dev","helpers","darkfriend","debug","string","develop"],
     "homepage": "https://github.com/darkfriend/devhelpers",
     "authors": [
         {
@@ -15,7 +15,8 @@
     },
     "autoload":{
         "classmap":[
-            "./DebugHelper.php"
+            "./DebugHelper.php",
+            "./StringHelper.php"
         ]
     }
 }
