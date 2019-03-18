@@ -2,7 +2,7 @@
 /**
  * Class helper for array
  * @author darkfriend <hi@darkfriend.ru>
- * @version 1.2.0
+ * @version 1.2.1
  */
 
 namespace darkfriend\devhelpers;
