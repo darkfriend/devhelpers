@@ -10,7 +10,7 @@ namespace darkfriend\devhelpers;
 class ArrayHelper
 {
 	/**
-	 * Checks if a value exists in an array.
+	 * Check value exists in an array.
 	 * Highload method searches haystack for needle.
 	 * @param string $needle
 	 * @param array $haystack
@@ -21,5 +21,15 @@ class ArrayHelper
 		foreach(array_values($haystack) as $v)
 			$newHaystack[$v] = true;
 		return isset($newHaystack[$needle]);
+	}
+
+	/**
+	 * Check multiple array
+	 * @param array $arr
+	 * @return bool
+	 */
+	public static function isMulti($arr) {
+		rsort($arr);
+		return isset($arr[0]) && is_array($arr[0]);
 	}
 }

@@ -11,6 +11,10 @@
   * ```StringHelper::generateString($length,$chars)``` - статичный метод, который возвращает сгенерированную строку нужной длины
   * ```StringHelper::getDeclension($value,$words)``` - статичный метод, который возвращает окончания слов при слонении. _Например: 5 товаров, 1 товар, 3 товара_
   
+* ArrayHelper
+  * ``ArrayHelper::in_array($needle, $haystack)`` - highload method for search value in array
+  * ``ArrayHelper::isMulti($arr)`` - check array on multiple array
+  
 ## DebugHelper::print_pre($o,$die,$show);
 * $o - данные, которые надо вывести
 * $die - прерывать ли после вывода выполнение скрипта (по умолчанию false)
