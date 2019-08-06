@@ -14,6 +14,8 @@
 * ArrayHelper
   * ``ArrayHelper::in_array($needle, $haystack)`` - highload method for search value in array
   * ``ArrayHelper::isMulti($arr)`` - check array on multiple array
+  * `` ArrayHelper::sortValuesToArray($sourceArray,$orderArray)`` - Sort values array to order array
+  * `` ArrayHelper::sortKeysToArray($sourceArray,$orderArray)`` - Sort keys source array to order array
   
 ## DebugHelper::print_pre($o,$die,$show);
 * $o - данные, которые надо вывести
