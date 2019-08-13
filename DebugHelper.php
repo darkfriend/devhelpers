@@ -1,7 +1,7 @@
 <?php
 /**
  * @author darkfriend <hi@darkfriend.ru>
- * @version 1.0.1
+ * @version 1.1.0
  */
 
 namespace darkfriend\devhelpers;
@@ -9,6 +9,14 @@ namespace darkfriend\devhelpers;
 class DebugHelper
 {
   public static $mainKey = 'ADMIN';
+  public static $traceMode;
+
+  protected static $pathLog = '/';
+  protected static $hashName;
+
+  const TRACE_MODE_REPLACE = 1;
+  const TRACE_MODE_APPEND = 2;
+  const TRACE_MODE_SESSION = 3;
 
   /**
    * Output formatted <pre>
@@ -50,5 +58,95 @@ class DebugHelper
     $show = isset($_COOKIE[self::$mainKey]);
     if (!$show) $show = isset($_GET[self::$mainKey]);
     if ($show) $func($params);
+  }
+
+  /**
+   * Save trace message
+   * @param mixed $message
+   * @param string $category
+   * @return void
+   */
+  public static function trace($message, $category='common')
+  {
+    $bt = debug_backtrace();
+    $bt = $bt[0];
+    $dRoot = $_SERVER["DOCUMENT_ROOT"];
+    $dRoot = str_replace("/","\\",$dRoot);
+    $bt["file"] = str_replace($dRoot,"",$bt["file"]);
+    $dRoot = str_replace("\\","/",$dRoot);
+    $bt["file"] = str_replace($dRoot,"",$bt["file"]);
+
+    switch (self::$traceMode) {
+      case self::TRACE_MODE_REPLACE:
+        $flag = FILE_BINARY;
+        break;
+      default: $flag = FILE_APPEND;
+    }
+
+    $file = $_SERVER['DOCUMENT_ROOT'].self::$pathLog.self::$hashName.'trace.log';
+    if(!is_dir(dirname($file))) {
+      @mkdir(dirname($file),0777,true);
+    }
+
+    file_put_contents (
+      $file,
+      'TRACE: '. $category . "\n"
+      .'DATE: '.date('Y-m-d H:i:s') . "\n"
+      . "FILE: {$bt['file']} [{$bt['line']}]" . "\n"
+      . "\n" . "\n"
+      . print_r($message,true)
+      . "\n------TRACE_END------.\n\n\n\n",
+      $flag
+    );
+  }
+
+  /**
+   * @param null|string $sessionHash
+   * @param null|integer $mode
+   * @param string $pathLog
+   */
+  public static function traceInit($sessionHash=null, $mode=null, $pathLog='/')
+  {
+    self::setHashSession($sessionHash);
+    self::setTraceMode($mode);
+    self::$pathLog = $pathLog;
+  }
+
+  /**
+   * Generated hash session for trace file
+   * @return string
+   */
+  protected static function generateHashSession()
+  {
+    if(!self::$hashName) {
+      self::$hashName = time().'-';
+    }
+    return self::$hashName;
+  }
+
+  /**
+   * Set hash for trace file
+   * @param string $hash
+   * @return void
+   */
+  public static function setHashSession($hash=null)
+  {
+    if(!$hash) self::generateHashSession();
+    self::$hashName = $hash.'-';
+  }
+
+  /**
+   * @param null|string $mode mode file trace TRACE_MODE_REPLACE/TRACE_MODE_APPEND/TRACE_MODE_SESSION
+   * @return void
+   */
+  public static function setTraceMode($mode = null)
+  {
+    if(!self::$traceMode) {
+      if(!$mode) $mode = self::TRACE_MODE_APPEND;
+      self::$traceMode = $mode;
+      if($mode==self::TRACE_MODE_SESSION) {
+        self::generateHashSession();
+      }
+    }
   }
 }
