@@ -17,7 +17,9 @@
         "classmap":[
             "./DebugHelper.php",
             "./StringHelper.php",
-            "./ArrayHelper.php"
+            "./ArrayHelper.php",
+            "./CurlHelper.php",
+            "./TypeHelper.php"
         ]
     }
 }
