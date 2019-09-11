@@ -112,7 +112,7 @@ class CurlHelper
         if (!function_exists('curl_init')) {
             throw new \Exception('curl is not found!');
         }
-        if (!$this->_ch) {
+        if (empty($this->_ch)) {
             $this->_ch = curl_init();
             curl_setopt($this->_ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($this->_ch, CURLOPT_FOLLOWLOCATION, true);
