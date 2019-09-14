@@ -2,7 +2,7 @@
 /**
  * PHP curl helper package
  * @author darkfriend <hi@darkfriend.ru>
- * @version 1.0.0
+ * @version 1.1.0
  * @since 1.4.0
  */
 
@@ -24,6 +24,8 @@ class CurlHelper
     protected $debug = false;
     /** @var string */
     protected $debugFile = '';
+    /** @var int  */
+    protected $port = 0;
 
     /** @var int */
     public $lastCode = 0;
@@ -79,6 +81,17 @@ class CurlHelper
     }
 
     /**
+     * Set request port
+     * @param int $port
+     * @return $this
+     */
+    public function setPort(int $port)
+    {
+        $this->port = $port;
+        return $this;
+    }
+
+    /**
      * Set headers to curl
      * @return $this
      */
@@ -113,12 +126,25 @@ class CurlHelper
             throw new \Exception('curl is not found!');
         }
         if (empty($this->_ch)) {
+
             $this->_ch = curl_init();
             curl_setopt($this->_ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($this->_ch, CURLOPT_FOLLOWLOCATION, true);
-            if ($method == 'post') {
-                curl_setopt($this->_ch, CURLOPT_POST, 1);
+
+            if($this->port) {
+                curl_setopt($this->_ch, CURLOPT_PORT, $this->port);
             }
+
+            switch ($method) {
+                case 'get': break;
+                case 'post':
+                    curl_setopt($this->_ch, CURLOPT_POST, 1);
+                    break;
+                default:
+                    curl_setopt($this->_ch, CURLOPT_CUSTOMREQUEST, $method);
+                    break;
+            }
+
             curl_setopt($this->_ch, CURLOPT_HEADER, 1);
             curl_setopt($this->_ch, CURLOPT_SSL_VERIFYPEER, 0);
             curl_setopt($this->_ch, CURLOPT_TIMEOUT, $this->timeout);
@@ -141,19 +167,23 @@ class CurlHelper
     {
         $this->clear();
         $this->setCurl($method);
-        if ($method == 'get' && $data) {
-            $data = http_build_query($data);
-            $url .= '?' . $data;
-        }
-        curl_setopt($this->_ch, CURLOPT_URL, $url);
 
-        if ($requestType == 'json' && $data) {
-            $data = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        if($data) {
+            if ($requestType == 'json') {
+                $data = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+            } else {
+                $data = http_build_query($data);
+            }
         }
-        if ($method == 'post') {
-            $data = http_build_query($data);
+
+        if($method == 'get') {
+            //            $data = http_build_query($data);
+            $url .= '?' . $data;
+        } else {
             curl_setopt($this->_ch, CURLOPT_POSTFIELDS, $data);
         }
+
+        curl_setopt($this->_ch, CURLOPT_URL, $url);
 
         if ($requestType == 'json') {
             $this->headers['Content-Type'] = 'application/json; charset=utf-8';
