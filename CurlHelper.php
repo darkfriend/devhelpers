@@ -174,13 +174,12 @@ class CurlHelper
             } else {
                 $data = http_build_query($data);
             }
-        }
-
-        if($method == 'get') {
-            //            $data = http_build_query($data);
-            $url .= '?' . $data;
-        } else {
-            curl_setopt($this->_ch, CURLOPT_POSTFIELDS, $data);
+            if($method == 'get') {
+                //            $data = http_build_query($data);
+                $url .= '?' . $data;
+            } else {
+                curl_setopt($this->_ch, CURLOPT_POSTFIELDS, $data);
+            }
         }
 
         curl_setopt($this->_ch, CURLOPT_URL, $url);
